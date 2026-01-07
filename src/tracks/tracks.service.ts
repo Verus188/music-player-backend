@@ -7,8 +7,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TracksService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createTrackDto: CreateTrackDto) {
-    return 'This action adds a new track';
+  async create(createTrackDto: CreateTrackDto) {
+    return await this.prisma.track.create({ data: createTrackDto });
   }
 
   async findAll() {

@@ -16,8 +16,8 @@ model Track {
   id Int @id @default(autoincrement())
   title String
   artist String
-  fileUrl String
-  duration Int
+  fileUrl String?
+  duration Int?
   albumImageUrl String?
   likedBy User[] @relation("UserFavoriteTracks")
   createdAt DateTime @default(now())
