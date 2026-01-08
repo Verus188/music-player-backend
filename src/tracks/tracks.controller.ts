@@ -10,10 +10,14 @@ import {
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
+import { StorageService } from 'src/storage/storage.service';
 
 @Controller('tracks')
 export class TracksController {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(
+    private readonly tracksService: TracksService,
+    private readonly storageService: StorageService,
+  ) {}
 
   @Post()
   create(@Body() createTrackDto: CreateTrackDto) {
@@ -23,6 +27,19 @@ export class TracksController {
   @Get()
   findAll() {
     return this.tracksService.findAll();
+  }
+
+  @Get('test-upload')
+  async testUpload() {
+    const buffer = Buffer.from('Hello, World!', 'utf-8');
+    const fileName = `test-${Date.now()}.txt`;
+    const url = await this.storageService.uploadFile(
+      buffer,
+      fileName,
+      'text/plain',
+    );
+
+    return { message: 'File uploaded successfully', url };
   }
 
   @Get(':id')
