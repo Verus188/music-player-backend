@@ -2,17 +2,16 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { hash, compare } from 'bcrypt';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthResponseDto } from './dto/auth-response.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly prismaService: PrismaService,
   ) {}
 
-  async signIn(email: string, pass: string): Promise<{ accessToken: string }> {
+  async signIn(email: string, pass: string): Promise<AuthResponseDto> {
     const user = await this.usersService.findUserByEmail(email);
 
     if (!user || !(await compare(pass, user.password))) {
@@ -23,6 +22,11 @@ export class AuthService {
 
     return {
       accessToken: await this.jwtService.signAsync(payload),
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
     };
   }
 
@@ -30,7 +34,7 @@ export class AuthService {
     name: string,
     email: string,
     pass: string,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<AuthResponseDto> {
     const hashedPassword = await hash(pass, 10);
 
     const existingUser = await this.usersService.findUserByEmail(email);
