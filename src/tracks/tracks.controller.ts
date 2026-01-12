@@ -19,6 +19,7 @@ export class TracksController {
     private readonly storageService: StorageService,
   ) {}
 
+  // TODO: запретить создавать треки через эндпоинт, когда будет api
   @Post()
   create(@Body() createTrackDto: CreateTrackDto) {
     return this.tracksService.create(createTrackDto);
