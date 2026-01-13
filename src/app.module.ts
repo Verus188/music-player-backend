@@ -6,19 +6,22 @@ import { PrismaService } from './prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { StorageService } from './storage/storage.service';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { MusicModule } from './music/music.module';
 import { JwtModule } from '@nestjs/jwt';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     TracksModule,
+
     ConfigModule.forRoot({ isGlobal: true }),
+    MusicModule,
     AuthModule,
     UsersModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [AppController],
