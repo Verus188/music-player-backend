@@ -22,6 +22,10 @@ export class TracksController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'Получение треков с api',
+    description: 'Будет удалена в будущем',
+  })
   findAll() {
     return this.tracksService.findAll();
   }
