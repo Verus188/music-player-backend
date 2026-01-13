@@ -12,6 +12,7 @@ import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import type { RequestWithUser } from 'src/auth/interfaces/auth.interface';
 import type { Track, User } from '@prisma/client';
+import type { ApiTrack } from 'src/music/interfaces/track.interface';
 
 @Controller('users')
 export class UsersController {
@@ -27,7 +28,7 @@ export class UsersController {
   @Post('me/favorites')
   addFavorite(
     @Request() req: RequestWithUser,
-    @Body() track: Track,
+    @Body() track: ApiTrack,
   ): Promise<User> {
     return this.usersService.addFavorite(req.user.sub, track);
   }
