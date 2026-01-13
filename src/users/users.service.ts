@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ApiTrack } from 'src/music/interfaces/track.interface';
+import { ApiTrackDto } from 'src/music/dto/api-track.dto';
 
 @Injectable()
 export class UsersService {
@@ -41,7 +41,7 @@ export class UsersService {
     return favoriteTracks;
   }
 
-  async addFavorite(userId: number, track: ApiTrack) {
+  async addFavorite(userId: number, track: ApiTrackDto) {
     return this.prismaService.user.update({
       where: { id: userId },
       data: {

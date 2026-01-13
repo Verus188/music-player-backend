@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
+import { ApiTrackDto } from 'src/music/dto/api-track.dto';
 import { JamendoTrack } from 'src/music/interfaces/jamendo-track.interface';
 import { MusicProvider } from 'src/music/interfaces/music-provider.interface';
-import { ApiTrack } from 'src/music/interfaces/track.interface';
 
 @Injectable()
 export class JamendoService implements MusicProvider {
   private readonly url = 'https://api.jamendo.com/v3.0';
   private readonly clientId = process.env.JAMENDO_CLIENT_ID;
 
-  async searchTracks(query: string): Promise<ApiTrack[]> {
+  async searchTracks(query: string): Promise<ApiTrackDto[]> {
     const response = await axios.get<{ results: JamendoTrack[] }>(
       `${this.url}/tracks`,
       {
@@ -25,7 +25,7 @@ export class JamendoService implements MusicProvider {
     return tracksFromApi.map((track) => this.toApiTrack(track));
   }
 
-  async getTrack(trackId: string): Promise<ApiTrack> {
+  async getTrack(trackId: string): Promise<ApiTrackDto> {
     const response = await axios.get<{ results: JamendoTrack[] }>(
       `${this.url}/tracks`,
       {
@@ -46,7 +46,7 @@ export class JamendoService implements MusicProvider {
     return this.toApiTrack(track);
   }
 
-  private toApiTrack(track: JamendoTrack): ApiTrack {
+  private toApiTrack(track: JamendoTrack): ApiTrackDto {
     return {
       duration: track.duration,
       title: track.name,
