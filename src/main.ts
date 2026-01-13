@@ -18,7 +18,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors({
-    origin: '*', // TODO: изменить на конкретный домен в продакшене
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });
   await app.listen(process.env.PORT ?? 3000);
