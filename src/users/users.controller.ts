@@ -13,19 +13,22 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import type { RequestWithUser } from 'src/auth/interfaces/auth.interface';
 import type { Track, User } from '@prisma/client';
 import type { ApiTrack } from 'src/music/interfaces/track.interface';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard)
   @Get('me/favorites')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   getFavorites(@Request() req: RequestWithUser): Promise<Track[]> {
     return this.usersService.getFavorites(req.user.sub);
   }
 
-  @UseGuards(AuthGuard)
   @Post('me/favorites')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   addFavorite(
     @Request() req: RequestWithUser,
     @Body() track: ApiTrack,
@@ -33,8 +36,9 @@ export class UsersController {
     return this.usersService.addFavorite(req.user.sub, track);
   }
 
-  @UseGuards(AuthGuard)
   @Delete('me/favorites/:trackId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   removeFavorite(
     @Request() req: RequestWithUser,
     @Param('trackId') trackId: number,
