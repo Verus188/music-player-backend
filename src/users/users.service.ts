@@ -29,12 +29,16 @@ export class UsersService {
   }
 
   async getFavorites(userId: number) {
-    const tracks = await this.prismaService.track.findMany({
+    const favoriteTracks = await this.prismaService.track.findMany({
       where: {
-        id: userId,
+        likedBy: {
+          some: {
+            id: userId,
+          },
+        },
       },
     });
-    return tracks;
+    return favoriteTracks;
   }
 
   async addFavorite(userId: number, track: ApiTrack) {
