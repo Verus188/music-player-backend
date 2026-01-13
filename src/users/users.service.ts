@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Track } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +24,50 @@ export class UsersService {
         email,
         name,
         password,
+      },
+    });
+  }
+
+  async getFavorites(userId: number) {
+    const tracks = await this.prismaService.track.findMany({
+      where: {
+        id: userId,
+      },
+    });
+    return tracks;
+  }
+
+  async addFavorite(userId: number, track: Track) {
+    const trackData: Omit<Track, 'id' | 'createdAt'> = track;
+
+    return this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        favoriteTracks: {
+          connectOrCreate: {
+            where: { apiUrl: track.apiUrl },
+            create: trackData,
+          },
+        },
+      },
+      include: {
+        favoriteTracks: true,
+      },
+    });
+  }
+
+  async removeFavorite(userId: number, trackId: number) {
+    return this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        favoriteTracks: {
+          disconnect: {
+            id: trackId,
+          },
+        },
+      },
+      include: {
+        favoriteTracks: true,
       },
     });
   }

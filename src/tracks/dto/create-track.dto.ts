@@ -8,4 +8,8 @@ export class CreateTrackDto {
   @IsString()
   @IsNotEmpty()
   readonly artist: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly apiUrl: string;
 }
