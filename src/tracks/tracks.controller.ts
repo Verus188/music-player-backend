@@ -21,6 +21,11 @@ export class TracksController {
     return this.tracksService.create(createTrackDto);
   }
 
+  @Get()
+  findAll() {
+    return this.tracksService.findAll();
+  }
+
   @Get('test-upload')
   @ApiOperation({
     summary: 'Загрузка тестового файла в хранилище',

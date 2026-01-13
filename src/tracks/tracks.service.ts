@@ -9,4 +9,8 @@ export class TracksService {
   async create(createTrackDto: CreateTrackDto) {
     return await this.prisma.track.create({ data: createTrackDto });
   }
+
+  async findAll() {
+    return await this.prisma.track.findMany();
+  }
 }
