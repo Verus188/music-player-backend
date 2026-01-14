@@ -11,6 +11,7 @@ model Track {
   title String
   artist String
   apiUrl String @unique
+  apiAudioUrl String
   fileUrl String?
   duration Int?
   albumImageUrl String?

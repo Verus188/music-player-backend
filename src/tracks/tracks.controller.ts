@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { TracksService } from './tracks.service';
-import { CreateTrackDto } from './dto/create-track.dto';
 import { StorageService } from 'src/storage/storage.service';
 import { ApiOperation } from '@nestjs/swagger';
+import { ApiTrackDto } from 'src/music/dto/api-track.dto';
 
 @Controller('tracks')
 export class TracksController {
@@ -17,7 +17,7 @@ export class TracksController {
     summary: 'Загрузка трека в бд',
     description: 'Сейчас нужна для тестов. В будущем будет удалена',
   })
-  create(@Body() createTrackDto: CreateTrackDto) {
+  create(@Body() createTrackDto: ApiTrackDto) {
     return this.tracksService.create(createTrackDto);
   }
 

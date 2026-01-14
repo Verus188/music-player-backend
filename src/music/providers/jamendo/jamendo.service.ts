@@ -47,11 +47,14 @@ export class JamendoService implements MusicProvider {
   }
 
   private toApiTrack(track: JamendoTrack): ApiTrackDto {
+    const apiUrl = `https://www.jamendo.com/track/${track.id}`;
+
     return {
       duration: track.duration,
       title: track.name,
       artist: track.artist_name,
-      apiUrl: track.audio,
+      apiUrl: apiUrl,
+      apiAudioUrl: track.audio,
     };
   }
 }
