@@ -31,7 +31,7 @@ export class UsersController {
   @ApiBearerAuth()
   addFavorite(
     @Request() req: RequestWithUser,
-    @Body() track: ApiTrackDto,
+    @Body() track: Omit<ApiTrackDto, 'isFavorite'>,
   ): Promise<User> {
     return this.usersService.addFavorite(req.user.sub, track);
   }
