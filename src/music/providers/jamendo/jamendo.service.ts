@@ -54,7 +54,9 @@ export class JamendoService implements MusicProvider {
       title: track.name,
       artist: track.artist_name,
       apiUrl: apiUrl,
-      apiAudioUrl: track.audio,
+      audio: track.audio,
+      albumName: track.album_name,
+      albumImage: track.album_image,
     };
   }
 }
