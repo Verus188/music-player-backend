@@ -41,7 +41,7 @@ export class UsersService {
     return favoriteTracks;
   }
 
-  async addFavorite(userId: number, track: ApiTrackDto) {
+  async addFavorite(userId: number, track: Omit<ApiTrackDto, 'isFavorite'>) {
     return this.prismaService.user.update({
       where: { id: userId },
       data: {

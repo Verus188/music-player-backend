@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class ApiTrackDto {
   @IsString()
@@ -56,4 +56,11 @@ export class ApiTrackDto {
       'https://usercontent.jamendo.com?type=album&id=63189&width=300&trackid=542041',
   })
   albumImage: string;
+
+  @IsBoolean()
+  @ApiProperty({
+    description: 'Добавлен ли трек в избранное',
+    example: false,
+  })
+  isFavorite: boolean;
 }
