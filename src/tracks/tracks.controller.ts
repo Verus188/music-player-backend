@@ -17,7 +17,7 @@ export class TracksController {
     summary: 'Загрузка трека в бд',
     description: 'Сейчас нужна для тестов. В будущем будет удалена',
   })
-  create(@Body() createTrackDto: ApiTrackDto) {
+  create(@Body() createTrackDto: Omit<ApiTrackDto, 'isFavorite'>) {
     return this.tracksService.create(createTrackDto);
   }
 

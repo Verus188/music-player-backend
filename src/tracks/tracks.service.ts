@@ -6,7 +6,7 @@ import { ApiTrackDto } from 'src/music/dto/api-track.dto';
 export class TracksService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createTrackDto: ApiTrackDto) {
+  async create(createTrackDto: Omit<ApiTrackDto, 'isFavorite'>) {
     return await this.prisma.track.create({ data: createTrackDto });
   }
 
