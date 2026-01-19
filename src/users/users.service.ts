@@ -28,7 +28,7 @@ export class UsersService {
     });
   }
 
-  async getFavorites(userId: number) {
+  async getFavorites(userId: number): Promise<ApiTrackDto[]> {
     const favoriteTracks = await this.prismaService.track.findMany({
       where: {
         likedBy: {
@@ -38,7 +38,11 @@ export class UsersService {
         },
       },
     });
-    return favoriteTracks;
+    return favoriteTracks.map((track) => ({
+      ...track,
+      duration: track.duration ?? 0,
+      isFavorite: true,
+    }));
   }
 
   async addFavorite(userId: number, track: Omit<ApiTrackDto, 'isFavorite'>) {
