@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
 import { JwtPayload } from 'src/auth/interfaces/auth.interface';
-import { ApiTrackDto } from 'src/music/dto/api-track.dto';
+import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
 import { JamendoTrack } from 'src/music/interfaces/jamendo-track.interface';
 import { MusicProvider } from 'src/music/interfaces/music-provider.interface';
 import { UsersService } from 'src/users/users.service';
