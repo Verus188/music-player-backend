@@ -11,6 +11,15 @@ export class TracksController {
     private readonly storageService: StorageService,
   ) {}
 
+  @Get()
+  @ApiOperation({
+    summary: 'Получение треков с api',
+    description: 'Будет удалена в будущем',
+  })
+  findAll() {
+    return this.tracksService.findAll();
+  }
+
   // TODO: запретить создавать треки через эндпоинт, когда будет api
   @Post()
   @ApiOperation({
@@ -19,15 +28,6 @@ export class TracksController {
   })
   create(@Body() userTrackDto: UserTrackDto) {
     return this.tracksService.create(userTrackDto);
-  }
-
-  @Get()
-  @ApiOperation({
-    summary: 'Получение треков с api',
-    description: 'Будет удалена в будущем',
-  })
-  findAll() {
-    return this.tracksService.findAll();
   }
 
   @Get('test-upload')
