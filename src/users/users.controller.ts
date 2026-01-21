@@ -14,7 +14,7 @@ import type { RequestWithUser } from 'src/auth/interfaces/auth.interface';
 import type { User } from '@prisma/client';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
-import { UserTrackDto } from 'src/shared/dto/add-favorite.dto';
+import { UserTrackDto } from 'src/shared/dto/user-track.dto';
 
 @Controller('users')
 export class UsersController {

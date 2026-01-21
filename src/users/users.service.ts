@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserTrackDto } from 'src/shared/dto/add-favorite.dto';
 import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
+import { UserTrackDto } from 'src/shared/dto/user-track.dto';
 
 @Injectable()
 export class UsersService {

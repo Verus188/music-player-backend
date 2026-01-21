@@ -26,8 +26,8 @@ export class TracksController {
     summary: 'Загрузка трека в бд',
     description: 'Сейчас нужна для тестов. В будущем будет удалена',
   })
-  create(@Body() userTrackDto: ApiTrackDto) {
-    return this.tracksService.create(userTrackDto);
+  create(@Body() trackDto: ApiTrackDto) {
+    return this.tracksService.create(trackDto);
   }
 
   @Get('test-upload')
