@@ -5,7 +5,7 @@ export class SignUpDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'Увувевеве Аньетуенвеве Убвемубвем Оссас',
+    example: 'Антон',
     description: 'Имя пользователя',
   })
   readonly name: string;
@@ -13,7 +13,7 @@ export class SignUpDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'ubemubemOsas@gmail.com',
+    example: 'anton@gmail.com',
     description: 'Email пользователя',
   })
   readonly email: string;

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ApiTrackDto } from 'src/music/dto/api-track.dto';
+import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
 
 @Injectable()
 export class TracksService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createTrackDto: Omit<ApiTrackDto, 'isFavorite'>) {
+  async create(createTrackDto: ApiTrackDto) {
     return await this.prisma.track.create({ data: createTrackDto });
   }
 

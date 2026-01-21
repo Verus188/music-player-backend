@@ -5,7 +5,7 @@ export class SignInDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'ubemubemOsas@gmail.com',
+    example: 'anton@gmail.com',
     description: 'Email пользователя',
   })
   readonly email: string;

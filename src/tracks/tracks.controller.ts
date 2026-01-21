@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { StorageService } from 'src/storage/storage.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { ApiTrackDto } from 'src/music/dto/api-track.dto';
+import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
 
 @Controller('tracks')
 export class TracksController {
@@ -11,16 +11,6 @@ export class TracksController {
     private readonly storageService: StorageService,
   ) {}
 
-  // TODO: запретить создавать треки через эндпоинт, когда будет api
-  @Post()
-  @ApiOperation({
-    summary: 'Загрузка трека в бд',
-    description: 'Сейчас нужна для тестов. В будущем будет удалена',
-  })
-  create(@Body() createTrackDto: Omit<ApiTrackDto, 'isFavorite'>) {
-    return this.tracksService.create(createTrackDto);
-  }
-
   @Get()
   @ApiOperation({
     summary: 'Получение треков с api',
@@ -28,6 +18,16 @@ export class TracksController {
   })
   findAll() {
     return this.tracksService.findAll();
+  }
+
+  // TODO: запретить создавать треки через эндпоинт, когда будет api
+  @Post()
+  @ApiOperation({
+    summary: 'Загрузка трека в бд',
+    description: 'Сейчас нужна для тестов. В будущем будет удалена',
+  })
+  create(@Body() trackDto: ApiTrackDto) {
+    return this.tracksService.create(trackDto);
   }
 
   @Get('test-upload')
