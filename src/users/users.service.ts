@@ -46,8 +46,11 @@ export class UsersService {
     }));
   }
 
-  async addFavorite(userId: number, track: ApiTrackDto) {
-    return this.prismaService.user.update({
+  async addFavorite(
+    userId: number,
+    track: ApiTrackDto,
+  ): Promise<UserTrackDto[]> {
+    const response = await this.prismaService.user.update({
       where: { id: userId },
       data: {
         favoriteTracks: {
@@ -61,10 +64,20 @@ export class UsersService {
         favoriteTracks: true,
       },
     });
+
+    const responseWithIsFavorite: UserTrackDto[] = response.favoriteTracks.map(
+      (track) => ({
+        ...track,
+        duration: track.duration ?? 0,
+        isFavorite: true,
+      }),
+    );
+
+    return responseWithIsFavorite;
   }
 
   async removeFavorite(userId: number, trackId: number) {
-    return this.prismaService.user.update({
+    const response = await this.prismaService.user.update({
       where: { id: userId },
       data: {
         favoriteTracks: {
@@ -77,5 +90,15 @@ export class UsersService {
         favoriteTracks: true,
       },
     });
+
+    const responseWithIsFavorite: UserTrackDto[] = response.favoriteTracks.map(
+      (track) => ({
+        ...track,
+        duration: track.duration ?? 0,
+        isFavorite: true,
+      }),
+    );
+
+    return responseWithIsFavorite;
   }
 }
