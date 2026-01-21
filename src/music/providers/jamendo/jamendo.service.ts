@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
 import { JwtPayload } from 'src/auth/interfaces/auth.interface';
-import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
 import { JamendoTrack } from 'src/music/interfaces/jamendo-track.interface';
 import { MusicProvider } from 'src/music/interfaces/music-provider.interface';
+import { UserTrackDto } from 'src/shared/dto/user-track.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class JamendoService implements MusicProvider {
 
   constructor(private readonly usersService: UsersService) {}
 
-  async searchTracks(query: string, user: JwtPayload): Promise<ApiTrackDto[]> {
+  async searchTracks(query: string, user: JwtPayload): Promise<UserTrackDto[]> {
     const response = await axios.get<{ results: JamendoTrack[] }>(
       `${this.url}/tracks`,
       {
@@ -33,7 +33,7 @@ export class JamendoService implements MusicProvider {
     );
   }
 
-  async getTrack(trackId: string, user: JwtPayload): Promise<ApiTrackDto> {
+  async getTrack(trackId: string, user: JwtPayload): Promise<UserTrackDto> {
     const response = await axios.get<{ results: JamendoTrack[] }>(
       `${this.url}/tracks`,
       {
@@ -67,7 +67,7 @@ export class JamendoService implements MusicProvider {
   private toApiTrack(
     track: JamendoTrack,
     favoriteTrackUrls: Set<string>,
-  ): ApiTrackDto {
+  ): UserTrackDto {
     const apiUrl = `https://www.jamendo.com/track/${track.id}`;
 
     return {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserTrackDto } from 'src/shared/dto/user-track.dto';
 import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
+import { UserTrackDto } from 'src/shared/dto/user-track.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,7 +29,7 @@ export class UsersService {
     });
   }
 
-  async getFavorites(userId: number): Promise<ApiTrackDto[]> {
+  async getFavorites(userId: number): Promise<UserTrackDto[]> {
     const favoriteTracks = await this.prismaService.track.findMany({
       where: {
         likedBy: {
@@ -46,8 +46,11 @@ export class UsersService {
     }));
   }
 
-  async addFavorite(userId: number, track: UserTrackDto) {
-    return this.prismaService.user.update({
+  async addFavorite(
+    userId: number,
+    track: ApiTrackDto,
+  ): Promise<UserTrackDto[]> {
+    const response = await this.prismaService.user.update({
       where: { id: userId },
       data: {
         favoriteTracks: {
@@ -61,10 +64,20 @@ export class UsersService {
         favoriteTracks: true,
       },
     });
+
+    const responseWithIsFavorite: UserTrackDto[] = response.favoriteTracks.map(
+      (track) => ({
+        ...track,
+        duration: track.duration ?? 0,
+        isFavorite: true,
+      }),
+    );
+
+    return responseWithIsFavorite;
   }
 
   async removeFavorite(userId: number, trackId: number) {
-    return this.prismaService.user.update({
+    const response = await this.prismaService.user.update({
       where: { id: userId },
       data: {
         favoriteTracks: {
@@ -77,5 +90,15 @@ export class UsersService {
         favoriteTracks: true,
       },
     });
+
+    const responseWithIsFavorite: UserTrackDto[] = response.favoriteTracks.map(
+      (track) => ({
+        ...track,
+        duration: track.duration ?? 0,
+        isFavorite: true,
+      }),
+    );
+
+    return responseWithIsFavorite;
   }
 }

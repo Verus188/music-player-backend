@@ -1,6 +1,12 @@
-import { OmitType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { ApiTrackDto } from './api-track.dto';
+import { IsBoolean } from 'class-validator';
 
-export class UserTrackDto extends OmitType(ApiTrackDto, [
-  'isFavorite',
-] as const) {}
+export class UserTrackDto extends ApiTrackDto {
+  @IsBoolean()
+  @ApiProperty({
+    description: 'Добавлен ли трек в избранное',
+    example: false,
+  })
+  isFavorite: boolean;
+}
