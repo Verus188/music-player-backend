@@ -14,7 +14,7 @@ import type { RequestWithUser } from 'src/auth/interfaces/auth.interface';
 import type { User } from '@prisma/client';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ApiTrackDto } from 'src/shared/dto/api-track.dto';
-import { UserTrackDto } from 'src/shared/dto/user-track.dto';
+import { UserTrackDto } from 'src/shared/dto/add-favorite.dto';
 
 @Controller('users')
 export class UsersController {
@@ -23,7 +23,7 @@ export class UsersController {
   @Get('me/favorites')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  getFavorites(@Request() req: RequestWithUser): Promise<ApiTrackDto[]> {
+  getFavorites(@Request() req: RequestWithUser): Promise<UserTrackDto[]> {
     return this.usersService.getFavorites(req.user.sub);
   }
 
@@ -32,7 +32,7 @@ export class UsersController {
   @ApiBearerAuth()
   addFavorite(
     @Request() req: RequestWithUser,
-    @Body() track: UserTrackDto,
+    @Body() track: ApiTrackDto,
   ): Promise<User> {
     return this.usersService.addFavorite(req.user.sub, track);
   }
