@@ -1,11 +1,10 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import request from 'supertest';
-import { AppModule } from 'src/app.module';
 import { SignUpDto } from 'src/auth/dto/sign-up.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { createAppFixture } from './utils/create-app-fixture';
 import { App } from 'supertest/types';
-import { StorageService } from 'src/storage/storage.service';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication<App>;
@@ -18,15 +17,7 @@ describe('AuthController (e2e)', () => {
   const loginDto: Omit<SignUpDto, 'name'> = registerDto;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideProvider(StorageService)
-      .useValue({
-        onModuleInit: jest.fn().mockResolvedValue(undefined),
-        uploadFile: jest.fn().mockResolvedValue({ url: 'http://fake-url.com' }),
-      })
-      .compile();
+    const moduleFixture: TestingModule = await createAppFixture();
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
