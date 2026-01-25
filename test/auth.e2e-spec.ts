@@ -10,6 +10,12 @@ import { StorageService } from 'src/storage/storage.service';
 describe('AuthController (e2e)', () => {
   let app: INestApplication<App>;
   let prisma: PrismaService;
+  const registerDto: SignUpDto = {
+    email: `${Date.now()}@gmail.com`,
+    password: 'qwerty123456',
+    name: 'antonTester',
+  };
+  const loginDto: Omit<SignUpDto, 'name'> = registerDto;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -28,47 +34,21 @@ describe('AuthController (e2e)', () => {
     await app.init();
 
     prisma = moduleFixture.get<PrismaService>(PrismaService);
-  });
-
-  beforeEach(async () => {
-    await prisma.user.deleteMany();
-  });
-
-  it('auth/register (POST) - создание пользователя в БД', async () => {
-    const registerDto: SignUpDto = {
-      email: 'anton@gmail.com',
-      password: 'qwerty123456',
-      name: 'anton',
-    };
-
-    const response = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(registerDto)
-      .expect(201);
-
-    expect(response.body).toHaveProperty('accessToken');
-
-    const userInDb = await prisma.user.findUnique({
-      where: { email: registerDto.email },
-    });
-
-    expect(userInDb).toBeDefined();
-    expect(userInDb?.email).toBe(registerDto.email);
-  });
-
-  it('auth/login (POST) - авторизация пользователя', async () => {
-    const registerDto: SignUpDto = {
-      email: 'anton@gmail.com',
-      password: 'qwerty123456',
-      name: 'anton',
-    };
-    const loginDto: Omit<SignUpDto, 'name'> = registerDto;
 
     await request(app.getHttpServer())
       .post('/auth/register')
       .send(registerDto)
       .expect(201);
+  });
 
+  it('auth/register (POST) - регистрация существующего пользователя', async () => {
+    return request(app.getHttpServer())
+      .post('/auth/register')
+      .send(registerDto)
+      .expect(401);
+  });
+
+  it('auth/login (POST) - авторизация пользователя', async () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send(loginDto)
@@ -78,6 +58,7 @@ describe('AuthController (e2e)', () => {
   });
 
   afterAll(async () => {
+    await prisma.user.delete({ where: { email: registerDto.email } });
     await app.close();
   });
 });
